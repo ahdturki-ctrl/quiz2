@@ -213,6 +213,17 @@
     @media (max-width: 420px){
       :root{ font-size: 20px; }
     }
+    .qMedia{
+  width: min(50%, 320px) !important;  /* نصف العرض وبحد أقصى 320 */
+  aspect-ratio: 1 / 1 !important;
+  margin-inline: auto !important;
+}
+
+@media (max-width: 520px){
+  .qMedia{
+    width: min(70%, 240px) !important; /* على الجوال أصغر */
+  }
+}
   </style>
 
   <script>
