@@ -6,16 +6,11 @@
   <title>كويز الصدق وتحمل المسؤولية</title>
 
   <style>
-    /* =========================
-       THEME TOKENS
-       - html.dark كما طلبتِ
-       ========================= */
     :root{
-      font-size: 22px; /* خط أكبر */
+      font-size: 22px;
       --bg: #f6f7fb;
       --bg2: #eef2ff;
       --card: rgba(255,255,255,.92);
-      --card2: rgba(255,255,255,.75);
       --text: #0f172a;
       --muted: #475569;
       --border: rgba(15,23,42,.10);
@@ -24,10 +19,6 @@
       --brand: #4f46e5;
       --brand2:#9333ea;
 
-      --pill: rgba(79,70,229,.10);
-      --pillText:#0f172a;
-
-      --track: rgba(15,23,42,.08);
       --btn: #111827;
       --btnText: #ffffff;
       --btn2: rgba(15,23,42,.06);
@@ -49,7 +40,6 @@
       --bg: #070a12;
       --bg2:#0b1022;
       --card: rgba(17,24,39,.78);
-      --card2: rgba(17,24,39,.55);
       --text: #e5e7eb;
       --muted: #cbd5e1;
       --border: rgba(148,163,184,.18);
@@ -58,10 +48,6 @@
       --brand: #7c3aed;
       --brand2:#22c55e;
 
-      --pill: rgba(124,58,237,.18);
-      --pillText:#e5e7eb;
-
-      --track: rgba(148,163,184,.18);
       --btn: #e5e7eb;
       --btnText: #0b1022;
       --btn2: rgba(148,163,184,.12);
@@ -104,164 +90,43 @@
       overflow:hidden;
     }
 
-    .shell::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 240px at 15% 10%, rgba(255,255,255,.35), transparent 60%),
-        radial-gradient(700px 240px at 85% 20%, rgba(255,255,255,.18), transparent 60%),
-        radial-gradient(500px 250px at 50% 90%, rgba(255,255,255,.12), transparent 60%);
-      pointer-events:none;
-      mix-blend-mode: overlay;
-      opacity:.75;
-    }
-
     .card{
-      position:relative;
-      background: linear-gradient(180deg, var(--card), var(--card2));
+      background: var(--card);
       border-radius: var(--radius);
       border: 1px solid var(--border);
       padding: 20px;
       backdrop-filter: blur(10px);
     }
 
-    .top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+    /* Intro + Result screens */
+    .center{
+      text-align:center;
+      padding: 14px 10px 10px;
     }
-
-    h1{ margin:0; font-size: 1.25rem; letter-spacing:.2px; }
-    .sub{ margin: 6px 0 0; font-size: .78rem; color: var(--muted); }
-
-    .themeBtn{
-      border: 1px solid var(--border);
-      background: var(--choice);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 10px 12px;
-      cursor: pointer;
-      font-size: .78rem;
-      transition: background .15s ease, transform .05s ease;
-      user-select:none;
-      display:flex; align-items:center; gap:8px;
-    }
-    .themeBtn:hover{ background: var(--choiceHover); }
-    .themeBtn:active{ transform: translateY(1px); }
-
-    .meta{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      margin: 14px 0 16px;
-    }
-    .pill{
-      background: var(--pill);
-      color: var(--pillText);
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: .7rem;
-      border: 1px solid var(--border);
-      display:flex; align-items:center; gap:8px;
-    }
-
-    .bar{
-      height: 12px;
-      background: var(--track);
-      border-radius: 999px;
-      overflow:hidden;
-      flex:1; min-width: 200px;
-      border: 1px solid var(--border);
-    }
-    .bar > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, var(--brand), var(--brand2));
-      transition: width .25s ease;
-    }
-
-    .qRow{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-top: 6px;
-    }
-    .q{
-      font-size: 1.05rem;
+    .title{
       margin: 0;
-      font-weight: 700;
-      line-height: 1.6;
-      flex: 1;
-      min-width: 250px;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: .2px;
     }
-
-    .qBadge{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size: .7rem;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.08);
+    .sub{
+      margin: 10px 0 0;
       color: var(--muted);
+      font-size: .82rem;
     }
-    .star{
-      display:inline-block;
-      width: 18px; height: 18px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.12));
+    .row{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 18px;
     }
-
-    .choices{ display:grid; gap:10px; margin-top: 14px; }
-
-    button.choice{
-      text-align:right;
-      padding: 14px 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--choice);
-      color: var(--text);
-      cursor: pointer;
-      font-size: .92rem;
-      transition: background .15s ease, transform .05s ease, border-color .15s ease;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    button.choice:hover{ background: var(--choiceHover); }
-    button.choice:active{ transform: translateY(1px); }
-    button.choice[disabled]{ cursor:not-allowed; opacity:.85; }
-
-    .mark{
-      font-size: 1rem;
-      opacity: 0;
-      transform: translateY(2px);
-      transition: opacity .12s ease, transform .12s ease;
-    }
-    .choice.correct .mark{ opacity: 1; transform: translateY(0); }
-    .choice.wrong .mark{ opacity: 1; transform: translateY(0); }
-    .choice.correct{ border-color: var(--okBorder); background: var(--okBg); }
-    .choice.wrong{ border-color: var(--noBorder); background: var(--noBg); }
-
-    .feedback{
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 18px;
-      display:none;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      font-size: .9rem;
-    }
-    .feedback.ok{ border-color: var(--okBorder); background: var(--okBg); }
-    .feedback.no{ border-color: var(--noBorder); background: var(--noBg); }
-
-    .hint{
-      margin-top: 10px;
-      font-size: .78rem;
-      color: var(--muted);
-    }
-
-    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 16px; }
     .btn{
       border:0;
       border-radius: 16px;
-      padding: 12px 14px;
+      padding: 12px 16px;
       cursor:pointer;
-      font-size: .78rem;
+      font-size: .82rem;
       background: var(--btn);
       color: var(--btnText);
       transition: transform .05s ease, opacity .15s ease;
@@ -273,13 +138,38 @@
       color: var(--btn2Text);
       border: 1px solid var(--border);
     }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
 
-    .result{ display:none; text-align:center; padding: 8px 0 2px; }
-    .score{ font-size: 1.6rem; margin: 10px 0 2px; font-weight: 900; }
-    .small{ color: var(--muted); font-size: .8rem; }
+    /* Question screen: فقط السؤال والاختيارات */
+    .q{
+      font-size: 1.15rem;
+      margin: 0;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+    .choices{ display:grid; gap:10px; margin-top: 14px; }
 
-    /* نجوم احتفال */
+    button.choice{
+      text-align:right;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--choice);
+      color: var(--text);
+      cursor: pointer;
+      font-size: .95rem;
+      transition: background .15s ease, transform .05s ease, border-color .15s ease;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    button.choice:hover{ background: var(--choiceHover); }
+    button.choice:active{ transform: translateY(1px); }
+    button.choice[disabled]{ cursor:not-allowed; opacity:.9; }
+
+    .mark{ font-size: 1rem; opacity: 0; transform: translateY(2px); transition: opacity .12s ease, transform .12s ease; }
+    .choice.correct .mark, .choice.wrong .mark{ opacity: 1; transform: translateY(0); }
+    .choice.correct{ border-color: var(--okBorder); background: var(--okBg); }
+    .choice.wrong{ border-color: var(--noBorder); background: var(--noBg); }
+
+    /* Stars celebration */
     .starBurst{
       position: fixed;
       left: 0; top: 0;
@@ -297,17 +187,13 @@
       100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); }
     }
 
-    /* تحسين العرض على الشاشات الصغيرة */
     @media (max-width: 420px){
       :root{ font-size: 20px; }
-      .bar{ min-width: 160px; }
     }
   </style>
 
   <script>
-    // =========================
-    // THEME LOGIC (مثل كودك)
-    // =========================
+    // Theme logic (مثل اللي تبينه)
     (function initTheme(){
       const stored = localStorage.getItem("theme");
       const theme = (stored === "dark" || stored === "light") ? stored : "light";
@@ -324,25 +210,19 @@
       if(next === "dark") root.classList.add("dark");
       else root.classList.remove("dark");
       localStorage.setItem("theme", next);
-
-      const btn = document.getElementById("themeBtn");
-      if(btn) btn.innerHTML = (next === "dark")
-        ? '☀️ <span>الوضع الفاتح</span>'
-        : '🌙 <span>الوضع الداكن</span>';
+      updateThemeButtonLabel();
     }
 
     function updateThemeButtonLabel(){
       const root = document.documentElement;
-      const btn = document.getElementById("themeBtn");
-      if(!btn) return;
-      btn.innerHTML = root.classList.contains("dark")
-        ? '☀️ <span>الوضع الفاتح</span>'
-        : '🌙 <span>الوضع الداكن</span>';
+      const btns = document.querySelectorAll("[data-theme-btn]");
+      btns.forEach(btn => {
+        btn.innerHTML = root.classList.contains("dark")
+          ? '☀️ <span>الوضع الفاتح</span>'
+          : '🌙 <span>الوضع الداكن</span>';
+      });
     }
 
-    // =========================
-    // STAR CELEBRATION
-    // =========================
     function spawnStars(x, y){
       const stars = ["⭐","✨","🌟"];
       for(let i=0;i<14;i++){
@@ -366,52 +246,7 @@
 <body>
   <div class="wrap">
     <div class="shell">
-      <div class="card" id="quizCard">
-
-        <div class="top">
-          <div>
-            <h1>كويز الصدق وتحمل المسؤولية</h1>
-            <p class="sub">اختاري الإجابة الأفضل، ومع كل إجابة صحيحة تظهر النجوم.</p>
-          </div>
-
-          <button class="themeBtn" id="themeBtn" type="button" onclick="toggleTheme()">
-            🌙 <span>الوضع الداكن</span>
-          </button>
-        </div>
-
-        <div class="meta">
-          <div class="pill" id="counter">⭐ السؤال 1 / 10</div>
-          <div class="bar" aria-label="شريط التقدم"><div id="progress"></div></div>
-          <div class="pill" id="liveScore">🌟 الدرجة: 0</div>
-        </div>
-
-        <div id="qa">
-          <div class="qRow">
-            <p class="q" id="question"></p>
-            <div class="qBadge" id="qBadge">✨ تذكير: الصدق + الاعتذار</div>
-          </div>
-
-          <div class="choices" id="choices"></div>
-
-          <div class="feedback" id="feedback"></div>
-          <div class="hint" id="hint"></div>
-
-          <div class="actions">
-            <button class="btn secondary" id="prevBtn">⬅️ السابق</button>
-            <button class="btn" id="nextBtn">التالي ➡️</button>
-            <button class="btn secondary" id="restartBtn">🔁 إعادة المحاولة</button>
-          </div>
-        </div>
-
-        <div class="result" id="result">
-          <div class="score" id="finalScore"></div>
-          <div class="small" id="finalNote"></div>
-          <div class="actions" style="justify-content:center;">
-            <button class="btn" id="restartBtn2">ابدئي من جديد ✨</button>
-          </div>
-        </div>
-
-      </div>
+      <div class="card" id="card"></div>
     </div>
   </div>
 
@@ -420,139 +255,135 @@
     {
       q: "موقف 1: وجدتِ دفترًا ممزقًا على الطاولة. سألتِ المعلمة: من مزّق الدفتر؟",
       choices: ["أقول الحقيقة وأعتذر","ألوم غيري","أسكت"],
-      a: 0,
-      hint: "الصدق مع الاعتذار يساعد في إصلاح الخطأ ويزيد ثقة المعلمة.",
-      badge: "⭐ الصدق يرفع الثقة"
+      a: 0
     },
     {
       q: "موقف 2: انقلب كأس ماء وسقط الماء على أرض الفصل. قالت المعلمة: من أسقط الماء؟",
       choices: ["أقول: أنا، وأمسح المكان","أقول: ليست أنا","أضحك وأتركه"],
-      a: 0,
-      hint: "تحمل المسؤولية يعني أعترف وأصلح ما أفسدت.",
-      badge: "✨ أصلح الخطأ فورًا"
+      a: 0
     },
     {
       q: "موقف 3: انكسر قلمك في الفصل. سألت المعلمة: من كسر القلم؟",
       choices: ["أقول الحقيقة وأعتذر","أتهم زميلي","أخبّئ القلم"],
-      a: 0,
-      hint: "اتهام الآخرين أو الإخفاء يضاعف المشكلة.",
-      badge: "🌟 لا للاتهام"
+      a: 0
     },
     {
       q: "موقف 4: نسيتِ الواجب في البيت. قالت المعلمة: من نسي الواجب؟",
       choices: ["أقول: أنا، وأعتذر وأعد بإحضاره غدًا","أقول: ما عندي واجب أصلًا","أصمت وأتظاهر أني لم أسمع"],
-      a: 0,
-      hint: "الاعتراف مع وعد واضح أفضل من الإنكار.",
-      badge: "⭐ اعتراف + خطة"
+      a: 0
     },
     {
       q: "موقف 5: مزّقتِ ورقة زميلتك بالخطأ. سألتك: من مزّق الورقة؟",
       choices: ["أقول: أنا، آسفة وسأعوضك بورقة جديدة","أقول: ما أدري","أقول: زميلة أخرى فعلت ذلك"],
-      a: 0,
-      hint: "الصدق مع التعويض يحفظ الود.",
-      badge: "✨ عوضي واعتذري"
+      a: 0
     },
     {
       q: "موقف 6: كسرتِ لعبة من ألعاب ركن الفصل. سألتك المعلمة: ماذا حدث؟",
       choices: ["أقول الحقيقة وأطلب المساعدة لإصلاحها","أخبّئ اللعبة في الدرج","أقول: لا أعرف"],
-      a: 0,
-      hint: "الإصلاح أفضل من الإخفاء.",
-      badge: "🌟 الإصلاح أولًا"
+      a: 0
     },
     {
       q: "موقف 7: أخذتِ ممحاة زميلتك دون استئذان ثم نسيتِ إرجاعها. قالت: أين ممحاتي؟",
       choices: ["أقول: أخذتها وأعيدها وأعتذر","أقول: ما شفتها","أصمت وأتركها تبحث"],
-      a: 0,
-      hint: "الأمانة تعني إعادة الحق والاعتذار.",
-      badge: "⭐ الأمانة"
+      a: 0
     },
     {
       q: "موقف 8: نقلتِ إجابة من صديقتك دون فهم. سألتك المعلمة: هل حللتِ بنفسك؟",
       choices: ["أقول الحقيقة وأطلب شرحًا لأتعلم","أقول: نعم حللت وحدي","أغيّر الموضوع"],
-      a: 0,
-      hint: "الهدف هو الفهم لا مجرد التسليم.",
-      badge: "✨ تعلّم لا نقل"
+      a: 0
     },
     {
       q: "موقف 9: ضاع كتابك ثم وجدته زميلتك. قالت: هذا كتابك، هل كان معك؟",
       choices: ["أقول: نعم، شكرًا لك","أقول: ليس كتابي","آخذه دون كلام"],
-      a: 0,
-      hint: "الصدق والشكر من حسن الخلق.",
-      badge: "🌟 الشكر"
+      a: 0
     },
     {
       q: "موقف 10: كنتِ قائدة الصف ولم تنتبهي لترتيب الطابور. قالت المعلمة: ماذا نفعل؟",
       choices: ["أعتذر وأرتب الطابور بهدوء وأطلب التعاون","أقول: هم السبب وليس أنا","أترك المكان"],
-      a: 0,
-      hint: "القائد يعترف ويصلح بهدوء.",
-      badge: "⭐ قائدة مسؤولة"
+      a: 0
     }
   ];
 
+  let started = false;
   let idx = 0;
-  let selected = Array(quiz.length).fill(null);
+  let answers = Array(quiz.length).fill(null);
 
-  const $ = (id) => document.getElementById(id);
+  const card = document.getElementById("card");
 
-  function computeScore(){
-    return selected.reduce((s, ans, i) => s + (ans === quiz[i].a ? 1 : 0), 0);
+  function score(){
+    return answers.reduce((s, a, i) => s + (a === quiz[i].a ? 1 : 0), 0);
   }
 
-  function render(){
+  function renderIntro(){
+    card.innerHTML = `
+      <div class="center">
+        <h1 class="title">كويز الصدق وتحمل المسؤولية</h1>
+        <p class="sub">اضغطي بدء، ثم تظهر الأسئلة تباعًا.</p>
+
+        <div class="row">
+          <button class="btn" id="startBtn">ابدأ ✨</button>
+          <button class="btn secondary" data-theme-btn id="themeBtn">🌙 <span>الوضع الداكن</span></button>
+        </div>
+      </div>
+    `;
+    document.getElementById("startBtn").onclick = () => {
+      started = true;
+      idx = 0;
+      answers = Array(quiz.length).fill(null);
+      renderQuestion();
+    };
+    document.getElementById("themeBtn").onclick = toggleTheme;
     updateThemeButtonLabel();
+  }
 
-    if(idx >= quiz.length){
-      $("qa").style.display = "none";
-      $("result").style.display = "block";
-      const score = computeScore();
-      $("finalScore").textContent = `🌟 درجتك: ${score} / ${quiz.length}`;
-      $("finalNote").textContent = score === quiz.length
-        ? "ممتاز جدًا: اختياراتك تعكس الصدق وتحمل المسؤولية."
-        : "جيد: أعيدي المحاولة وركزي على الاعتذار والإصلاح والصدق.";
-      return;
-    }
+  function renderResult(){
+    const s = score();
+    card.innerHTML = `
+      <div class="center">
+        <h1 class="title">انتهى الكويز 🌟</h1>
+        <p class="sub">درجتك: <strong>${s} / ${quiz.length}</strong></p>
 
-    $("qa").style.display = "block";
-    $("result").style.display = "none";
+        <div class="row">
+          <button class="btn" id="restartBtn">إعادة من البداية 🔁</button>
+          <button class="btn secondary" data-theme-btn id="themeBtn2">🌙 <span>الوضع الداكن</span></button>
+        </div>
+      </div>
+    `;
+    document.getElementById("restartBtn").onclick = () => {
+      started = false;
+      renderIntro();
+    };
+    document.getElementById("themeBtn2").onclick = toggleTheme;
+    updateThemeButtonLabel();
+  }
 
-    const total = quiz.length;
-    $("counter").textContent = `⭐ السؤال ${idx+1} / ${total}`;
-    $("progress").style.width = `${Math.round(((idx+1)/total)*100)}%`;
-    $("liveScore").textContent = `🌟 الدرجة: ${computeScore()}`;
+  function renderQuestion(){
+    if(!started) return renderIntro();
+    if(idx >= quiz.length) return renderResult();
 
     const item = quiz[idx];
-    $("question").textContent = item.q;
-    $("qBadge").textContent = item.badge || "✨";
 
-    $("choices").innerHTML = "";
-    item.choices.forEach((c, i) => {
+    // صفحة السؤال: فقط السؤال والاختيارات
+    card.innerHTML = `
+      <p class="q">${item.q}</p>
+      <div class="choices" id="choices"></div>
+    `;
+
+    const choicesWrap = document.getElementById("choices");
+
+    item.choices.forEach((text, i) => {
       const btn = document.createElement("button");
       btn.className = "choice";
-      btn.innerHTML = `<span>${c}</span><span class="mark"> </span>`;
+      btn.innerHTML = `<span>${text}</span><span class="mark"></span>`;
       btn.onclick = (e) => choose(i, e);
-      $("choices").appendChild(btn);
+      choicesWrap.appendChild(btn);
     });
-
-    $("hint").textContent = "تلميح: " + (item.hint || "");
-    $("feedback").style.display = "none";
-    $("feedback").className = "feedback";
-
-    $("prevBtn").disabled = idx === 0;
-    $("nextBtn").disabled = selected[idx] === null;
-    $("nextBtn").textContent = (idx === total - 1) ? "إنهاء ✅" : "التالي ➡️";
   }
 
   function choose(choiceIndex, event){
-    selected[idx] = choiceIndex;
+    answers[idx] = choiceIndex;
 
-    const ok = (choiceIndex === quiz[idx].a);
-    const fb = $("feedback");
-    fb.style.display = "block";
-    fb.className = "feedback " + (ok ? "ok" : "no");
-    fb.textContent = ok ? "⭐ إجابة صحيحة! ممتاز." : "ليست الأفضل. جرّبي مرة أخرى في المرة القادمة.";
-
-    // تمييز الخيارات بصريًا
-    const buttons = Array.from($("choices").querySelectorAll("button.choice"));
+    const buttons = Array.from(document.querySelectorAll("button.choice"));
     buttons.forEach((b, i) => {
       b.disabled = true;
       const mark = b.querySelector(".mark");
@@ -560,7 +391,7 @@
       if(i === quiz[idx].a){
         b.classList.add("correct");
         if(mark) mark.textContent = "🌟";
-      } else if(i === choiceIndex && !ok){
+      } else if(i === choiceIndex && choiceIndex !== quiz[idx].a){
         b.classList.add("wrong");
         if(mark) mark.textContent = "✖";
       } else {
@@ -568,50 +399,23 @@
       }
     });
 
-    // نجوم احتفال عند الصحيح
-    if(ok && event && event.clientX && event.clientY){
-      spawnStars(event.clientX, event.clientY);
-    } else if(ok){
-      // fallback (وسط البطاقة)
-      const rect = $("quizCard").getBoundingClientRect();
-      spawnStars(rect.left + rect.width/2, rect.top + 140);
+    const ok = (choiceIndex === quiz[idx].a);
+    if(ok){
+      if(event && event.clientX && event.clientY) spawnStars(event.clientX, event.clientY);
+      else {
+        const rect = card.getBoundingClientRect();
+        spawnStars(rect.left + rect.width/2, rect.top + 120);
+      }
     }
 
-    $("nextBtn").disabled = false;
-    $("liveScore").textContent = `🌟 الدرجة: ${computeScore()}`;
+    // انتقال تلقائي للسؤال التالي
+    setTimeout(() => {
+      idx++;
+      renderQuestion();
+    }, 650);
   }
 
-  function next(){
-    if(selected[idx] === null) return;
-    idx++;
-    render();
-  }
-
-  function prev(){
-    if(idx === 0) return;
-    idx--;
-    // إعادة تفعيل الاختيار القديم لو موجود
-    render();
-    const old = selected[idx];
-    if(old !== null){
-      // نطبق نفس التمييز بدون إطلاق نجوم
-      const fakeEvent = null;
-      choose(old, fakeEvent);
-    }
-  }
-
-  function restart(){
-    idx = 0;
-    selected = Array(quiz.length).fill(null);
-    render();
-  }
-
-  $("nextBtn").addEventListener("click", next);
-  $("prevBtn").addEventListener("click", prev);
-  $("restartBtn").addEventListener("click", restart);
-  $("restartBtn2").addEventListener("click", restart);
-
-  render();
+  renderIntro();
 </script>
 </body>
 </html>
