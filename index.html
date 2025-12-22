@@ -148,12 +148,14 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,.06);
     }
-    .qMedia img{
-      display:block;
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-    }
+   .qMedia img{
+  display:block;
+  width: 100%;
+  aspect-ratio: 1 / 1;   /* مربّع */
+  height: auto;
+  object-fit: cover;      /* قص من الوسط */
+  object-position: center;
+}
 
     .imgFallback{
       padding: 14px;
