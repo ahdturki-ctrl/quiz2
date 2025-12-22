@@ -142,16 +142,17 @@
     }
 
     /* ✅ الصورة مربّعة 100% */
-    .qMedia{
-      margin-top: 14px;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.06);
+   .qMedia{
+  margin-top: 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
 
-      width: 100%;
-      aspect-ratio: 1 / 1; /* مربّع */
-    }
+  width: 50%;            /* نصف العرض */
+  aspect-ratio: 1 / 1;   /* مربع */
+  margin-inline: auto;   /* توسيط */
+}
     .qMedia img{
       display:block;
       width: 100%;
