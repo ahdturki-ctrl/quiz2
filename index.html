@@ -141,21 +141,24 @@
       line-height: 1.65;
     }
 
+    /* ✅ الصورة مربّعة 100% */
     .qMedia{
       margin-top: 14px;
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.06);
+
+      width: 100%;
+      aspect-ratio: 1 / 1; /* مربّع */
     }
-   .qMedia img{
-  display:block;
-  width: 100%;
-  aspect-ratio: 1 / 1;   /* مربّع */
-  height: auto;
-  object-fit: cover;      /* قص من الوسط */
-  object-position: center;
-}
+    .qMedia img{
+      display:block;
+      width: 100%;
+      height: 100%;          /* يملأ المربع */
+      object-fit: cover;      /* قص */
+      object-position: center;
+    }
 
     .imgFallback{
       padding: 14px;
@@ -208,7 +211,6 @@
 
     @media (max-width: 420px){
       :root{ font-size: 20px; }
-      .qMedia img{ height: 210px; }
     }
   </style>
 
@@ -286,7 +288,7 @@
   </div>
 
 <script>
-  // IMPORTANT: صورك الحالية حسب المستودع: q1.png.png ... q10.png.png
+  // صورك الحالية حسب المستودع: q1.png.png ... q10.png.png
   const quiz = [
     { q:"موقف 1: وجدتِ دفترًا ممزقًا على الطاولة. سألتِ المعلمة: من مزّق الدفتر؟",
       img:"q1.png.png",
@@ -410,7 +412,6 @@
     const item = quiz[idx];
     currentOptions = buildShuffledOptions(item);
 
-    // رابط الصورة مضبوط 100% مع GitHub Pages
     const imgUrl = absUrl(item.img);
 
     card.innerHTML = `
