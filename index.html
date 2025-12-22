@@ -98,7 +98,7 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Intro + Result screens */
+    /* Intro/Result only */
     .center{
       text-align:center;
       padding: 14px 10px 10px;
@@ -139,13 +139,32 @@
       border: 1px solid var(--border);
     }
 
-    /* Question screen: فقط السؤال والاختيارات */
+    /* Question screen: فقط سؤال + صورة + اختيارات */
     .q{
       font-size: 1.15rem;
       margin: 0;
       font-weight: 800;
       line-height: 1.65;
     }
+
+    .qMedia{
+      margin-top: 14px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+    }
+    .qMedia img{
+      display:block;
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+    @media (max-width: 420px){
+      :root{ font-size: 20px; }
+      .qMedia img{ height: 210px; }
+    }
+
     .choices{ display:grid; gap:10px; margin-top: 14px; }
 
     button.choice{
@@ -162,7 +181,7 @@
     }
     button.choice:hover{ background: var(--choiceHover); }
     button.choice:active{ transform: translateY(1px); }
-    button.choice[disabled]{ cursor:not-allowed; opacity:.9; }
+    button.choice[disabled]{ cursor:not-allowed; opacity:.92; }
 
     .mark{ font-size: 1rem; opacity: 0; transform: translateY(2px); transition: opacity .12s ease, transform .12s ease; }
     .choice.correct .mark, .choice.wrong .mark{ opacity: 1; transform: translateY(0); }
@@ -186,30 +205,10 @@
       10%  { opacity: 1; }
       100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); }
     }
-
-    @media (max-width: 420px){
-      :root{ font-size: 20px; }
-    }
-    .qMedia{
-  margin-top: 14px;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.06);
-}
-.qMedia img{
-  display:block;
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-}
-@media (max-width: 420px){
-  .qMedia img{ height: 200px; }
-}
   </style>
 
   <script>
-    // Theme logic (مثل اللي تبينه)
+    // Theme (localStorage + html.dark)
     (function initTheme(){
       const stored = localStorage.getItem("theme");
       const theme = (stored === "dark" || stored === "light") ? stored : "light";
@@ -256,6 +255,16 @@
         setTimeout(() => el.remove(), 800);
       }
     }
+
+    // Shuffle (لتغيير ترتيب الاختيارات)
+    function shuffle(array){
+      const a = array.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
   </script>
 </head>
 
@@ -267,77 +276,71 @@
   </div>
 
 <script>
-const quiz = [
-  {
-    q: "موقف 1: وجدتِ دفترًا ممزقًا على الطاولة. سألتِ المعلمة: من مزّق الدفتر؟",
-    img: "q1.png",
-    choices: ["أقول الحقيقة وأعتذر","ألوم غيري","أسكت"],
-    a: 0
-  },
-  {
-    q: "موقف 2: انقلب كأس ماء وسقط الماء على أرض الفصل. قالت المعلمة: من أسقط الماء؟",
-    img: "q2.png",
-    choices: ["أقول: أنا، وأمسح المكان","أقول: ليست أنا","أضحك وأتركه"],
-    a: 0
-  },
-  {
-    q: "موقف 3: انكسر قلمك في الفصل. سألت المعلمة: من كسر القلم؟",
-    img: "q3.png",
-    choices: ["أقول الحقيقة وأعتذر","أتهم زميلي","أخبّئ القلم"],
-    a: 0
-  },
-  {
-    q: "موقف 4: نسيتِ الواجب في البيت. قالت المعلمة: من نسي الواجب؟",
-    img: "q4.png",
-    choices: ["أقول: أنا، وأعتذر وأعد بإحضاره غدًا","أقول: ما عندي واجب أصلًا","أصمت وأتظاهر أني لم أسمع"],
-    a: 0
-  },
-  {
-    q: "موقف 5: مزّقتِ ورقة زميلتك بالخطأ. سألتك: من مزّق الورقة؟",
-    img: "q5.png",
-    choices: ["أقول: أنا، آسفة وسأعوضك بورقة جديدة","أقول: ما أدري","أقول: زميلة أخرى فعلت ذلك"],
-    a: 0
-  },
-  {
-    q: "موقف 6: كسرتِ لعبة من ألعاب ركن الفصل. سألتك المعلمة: ماذا حدث؟",
-    img: "q6.png",
-    choices: ["أقول الحقيقة وأطلب المساعدة لإصلاحها","أخبّئ اللعبة في الدرج","أقول: لا أعرف"],
-    a: 0
-  },
-  {
-    q: "موقف 7: أخذتِ ممحاة زميلتك دون استئذان ثم نسيتِ إرجاعها. قالت: أين ممحاتي؟",
-    img: "q7.png",
-    choices: ["أقول: أخذتها وأعيدها وأعتذر","أقول: ما شفتها","أصمت وأتركها تبحث"],
-    a: 0
-  },
-  {
-    q: "موقف 8: نقلتِ إجابة من صديقتك دون فهم. سألتك المعلمة: هل حللتِ بنفسك؟",
-    img: "q8.png",
-    choices: ["أقول الحقيقة وأطلب شرحًا لأتعلم","أقول: نعم حللت وحدي","أغيّر الموضوع"],
-    a: 0
-  },
-  {
-    q: "موقف 9: ضاع كتابك ثم وجدته زميلتك. قالت: هذا كتابك، هل كان معك؟",
-    img: "q9.png",
-    choices: ["أقول: نعم، شكرًا لك","أقول: ليس كتابي","آخذه دون كلام"],
-    a: 0
-  },
-  {
-    q: "موقف 10: كنتِ قائدة الصف ولم تنتبهي لترتيب الطابور. قالت المعلمة: ماذا نفعل؟",
-    img: "q10.png",
-    choices: ["أعتذر وأرتب الطابور بهدوء وأطلب التعاون","أقول: هم السبب وليس أنا","أترك المكان"],
-    a: 0
-  }
-];
+  // بيانات الأسئلة (الصورة في نفس المجلد: q1.png ... q10.png)
+  const quiz = [
+    { q: "موقف 1: وجدتِ دفترًا ممزقًا على الطاولة. سألتِ المعلمة: من مزّق الدفتر؟",
+      img: "q1.png",
+      choices: ["أقول الحقيقة وأعتذر","ألوم غيري","أسكت"],
+      correctText: "أقول الحقيقة وأعتذر"
+    },
+    { q: "موقف 2: انقلب كأس ماء وسقط الماء على أرض الفصل. قالت المعلمة: من أسقط الماء؟",
+      img: "q2.png",
+      choices: ["أقول: أنا، وأمسح المكان","أقول: ليست أنا","أضحك وأتركه"],
+      correctText: "أقول: أنا، وأمسح المكان"
+    },
+    { q: "موقف 3: انكسر قلمك في الفصل. سألت المعلمة: من كسر القلم؟",
+      img: "q3.png",
+      choices: ["أقول الحقيقة وأعتذر","أتهم زميلي","أخبّئ القلم"],
+      correctText: "أقول الحقيقة وأعتذر"
+    },
+    { q: "موقف 4: نسيتِ الواجب في البيت. قالت المعلمة: من نسي الواجب؟",
+      img: "q4.png",
+      choices: ["أقول: أنا، وأعتذر وأعد بإحضاره غدًا","أقول: ما عندي واجب أصلًا","أصمت وأتظاهر أني لم أسمع"],
+      correctText: "أقول: أنا، وأعتذر وأعد بإحضاره غدًا"
+    },
+    { q: "موقف 5: مزّقتِ ورقة زميلتك بالخطأ. سألتك: من مزّق الورقة؟",
+      img: "q5.png",
+      choices: ["أقول: أنا، آسفة وسأعوضك بورقة جديدة","أقول: ما أدري","أقول: زميلة أخرى فعلت ذلك"],
+      correctText: "أقول: أنا، آسفة وسأعوضك بورقة جديدة"
+    },
+    { q: "موقف 6: كسرتِ لعبة من ألعاب ركن الفصل. سألتك المعلمة: ماذا حدث؟",
+      img: "q6.png",
+      choices: ["أقول الحقيقة وأطلب المساعدة لإصلاحها","أخبّئ اللعبة في الدرج","أقول: لا أعرف"],
+      correctText: "أقول الحقيقة وأطلب المساعدة لإصلاحها"
+    },
+    { q: "موقف 7: أخذتِ ممحاة زميلتك دون استئذان ثم نسيتِ إرجاعها. قالت: أين ممحاتي؟",
+      img: "q7.png",
+      choices: ["أقول: أخذتها وأعيدها وأعتذر","أقول: ما شفتها","أصمت وأتركها تبحث"],
+      correctText: "أقول: أخذتها وأعيدها وأعتذر"
+    },
+    { q: "موقف 8: نقلتِ إجابة من صديقتك دون فهم. سألتك المعلمة: هل حللتِ بنفسك؟",
+      img: "q8.png",
+      choices: ["أقول الحقيقة وأطلب شرحًا لأتعلم","أقول: نعم حللت وحدي","أغيّر الموضوع"],
+      correctText: "أقول الحقيقة وأطلب شرحًا لأتعلم"
+    },
+    { q: "موقف 9: ضاع كتابك ثم وجدته زميلتك. قالت: هذا كتابك، هل كان معك؟",
+      img: "q9.png",
+      choices: ["أقول: نعم، شكرًا لك","أقول: ليس كتابي","آخذه دون كلام"],
+      correctText: "أقول: نعم، شكرًا لك"
+    },
+    { q: "موقف 10: كنتِ قائدة الصف ولم تنتبهي لترتيب الطابور. قالت المعلمة: ماذا نفعل؟",
+      img: "q10.png",
+      choices: ["أعتذر وأرتب الطابور بهدوء وأطلب التعاون","أقول: هم السبب وليس أنا","أترك المكان"],
+      correctText: "أعتذر وأرتب الطابور بهدوء وأطلب التعاون"
+    }
+  ];
 
   let started = false;
   let idx = 0;
   let answers = Array(quiz.length).fill(null);
 
+  // خيارات السؤال الحالي بعد خلطها
+  let currentOptions = []; // [{text, isCorrect}...]
+
   const card = document.getElementById("card");
 
   function score(){
-    return answers.reduce((s, a, i) => s + (a === quiz[i].a ? 1 : 0), 0);
+    return answers.reduce((s, ok) => s + (ok === true ? 1 : 0), 0);
   }
 
   function renderIntro(){
@@ -352,24 +355,31 @@ const quiz = [
         </div>
       </div>
     `;
+
     document.getElementById("startBtn").onclick = () => {
       started = true;
       idx = 0;
       answers = Array(quiz.length).fill(null);
       renderQuestion();
     };
+
     document.getElementById("themeBtn").onclick = toggleTheme;
     updateThemeButtonLabel();
   }
 
   function renderResult(){
     const s = score();
-  card.innerHTML = `
-  <p class="q">${item.q}</p>
-  ${item.img ? `<div class="qMedia"><img src="${item.img}" alt="صورة السؤال" loading="lazy"></div>` : ""}
-  <div class="choices" id="choices"></div>
-`;
+    card.innerHTML = `
+      <div class="center">
+        <p class="sub" style="margin-top:0">تم الانتهاء.</p>
+        <p class="title" style="font-size:1.2rem; margin-top:8px;">درجتك: ${s} / ${quiz.length}</p>
 
+        <div class="row">
+          <button class="btn" id="restartBtn">إعادة من البداية 🔁</button>
+          <button class="btn secondary" data-theme-btn id="themeBtn2">🌙 <span>الوضع الداكن</span></button>
+        </div>
+      </div>
+    `;
     document.getElementById("restartBtn").onclick = () => {
       started = false;
       renderIntro();
@@ -378,41 +388,54 @@ const quiz = [
     updateThemeButtonLabel();
   }
 
+  function buildShuffledOptions(item){
+    const opts = item.choices.map(t => ({ text: t, isCorrect: t === item.correctText }));
+    return shuffle(opts);
+  }
+
   function renderQuestion(){
     if(!started) return renderIntro();
     if(idx >= quiz.length) return renderResult();
 
     const item = quiz[idx];
+    currentOptions = buildShuffledOptions(item);
 
-    // صفحة السؤال: فقط السؤال والاختيارات
+    // صفحة السؤال: فقط سؤال + صورة + اختيارات
     card.innerHTML = `
       <p class="q">${item.q}</p>
+      <div class="qMedia" id="qMedia">
+        <img src="${item.img}" alt="صورة السؤال" loading="lazy"
+             onerror="this.parentElement.style.display='none';">
+      </div>
       <div class="choices" id="choices"></div>
     `;
 
     const choicesWrap = document.getElementById("choices");
 
-    item.choices.forEach((text, i) => {
+    currentOptions.forEach((opt, i) => {
       const btn = document.createElement("button");
       btn.className = "choice";
-      btn.innerHTML = `<span>${text}</span><span class="mark"></span>`;
+      btn.innerHTML = `<span>${opt.text}</span><span class="mark"></span>`;
       btn.onclick = (e) => choose(i, e);
       choicesWrap.appendChild(btn);
     });
   }
 
   function choose(choiceIndex, event){
-    answers[idx] = choiceIndex;
+    const picked = currentOptions[choiceIndex];
+    const ok = !!picked.isCorrect;
+    answers[idx] = ok;
 
     const buttons = Array.from(document.querySelectorAll("button.choice"));
     buttons.forEach((b, i) => {
       b.disabled = true;
       const mark = b.querySelector(".mark");
       b.classList.remove("correct","wrong");
-      if(i === quiz[idx].a){
+
+      if(currentOptions[i].isCorrect){
         b.classList.add("correct");
         if(mark) mark.textContent = "🌟";
-      } else if(i === choiceIndex && choiceIndex !== quiz[idx].a){
+      } else if(i === choiceIndex && !ok){
         b.classList.add("wrong");
         if(mark) mark.textContent = "✖";
       } else {
@@ -420,7 +443,6 @@ const quiz = [
       }
     });
 
-    const ok = (choiceIndex === quiz[idx].a);
     if(ok){
       if(event && event.clientX && event.clientY) spawnStars(event.clientX, event.clientY);
       else {
@@ -429,7 +451,6 @@ const quiz = [
       }
     }
 
-    // انتقال تلقائي للسؤال التالي
     setTimeout(() => {
       idx++;
       renderQuestion();
